@@ -38,3 +38,7 @@ lexpr       : Var                   # varExpr
             | Lambda Var '.' lexpr     # abstractionExpr
             | '(' lexpr lexpr ')'   # applicationExpr
             ;
+
+/* Any symbols that are unrecognized by the lexer will be deferred to the
+ * parser.
+Error       : . ;

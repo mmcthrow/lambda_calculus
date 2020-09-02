@@ -37,8 +37,16 @@ public class LambdaCalculusInterpreter {
          new BufferedReader(new InputStreamReader(System.in));
         CharStream inputStream = CharStreams.fromReader(in);
         LambdaExprLexer lexer = new LambdaExprLexer(inputStream);
+        lexer.addErrorListener(new BaseErrorListener() {
+            @Override
+            public void syntaxError(Recognizer<?, ?> r, Object o, int l, int c,
+             String msg, RecognitionException e) {
+                throw new RuntimeException(e);
+            }
+        });
         CommonTokenStream commonTokenStream = new CommonTokenStream(lexer);
         LambdaExprParser parser = new LambdaExprParser(commonTokenStream);
+        parser.setErrorHandler(new BailErrorStrategy());
 
         ParseTree tree = parser.lexpr();
         if (debugOutputEnabled) {
